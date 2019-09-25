@@ -6,6 +6,11 @@ namespace Hametuha;
 use Hametuha\WpBlockCreator\Pattern\AbstractBlock;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Assets manager for WordPress.
+ *
+ * @package wp-block-creator
+ */
 class WpBlockCreator {
 	
 	/**

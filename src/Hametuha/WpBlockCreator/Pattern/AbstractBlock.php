@@ -5,6 +5,7 @@ namespace Hametuha\WpBlockCreator\Pattern;
 
 use Hametuha\SingletonPattern\Singleton;
 use Hametuha\StringUtility\NamingConventions;
+use Hametuha\StringUtility\Path;
 
 /**
  * Abstract block.
@@ -14,7 +15,7 @@ use Hametuha\StringUtility\NamingConventions;
  */
 abstract class AbstractBlock extends Singleton {
 
-	use NamingConventions;
+	use NamingConventions, Path;
 	
 	protected $prefix = '';
 	
@@ -32,6 +33,7 @@ abstract class AbstractBlock extends Singleton {
 		if ( $this->disabled || ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
+		add_action( 'init', [ $this, 'register_assets' ] );
 		add_action( 'init', [ $this, 'register_block' ] );
 		add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
@@ -46,6 +48,15 @@ abstract class AbstractBlock extends Singleton {
 	 * Enqueue something only on editor.
 	 */
 	public function enqueue_block_editor_assets() {}
+
+	/**
+	 * Register scripts on init hook
+	 *
+	 * If registered scripts are required, override here.
+	 */
+	public function register_assets() {
+		do_action( 'hametuha_block_creator_register_assets', $this->get_block_base() );
+	}
 	
 	/**
 	 * Register block.
@@ -59,7 +70,7 @@ abstract class AbstractBlock extends Singleton {
 		if ( $style = $this->get_style() ) {
 			$args['editor_style'] = $style;
 		}
-		$args = $this->filter_attributes( $args );
+		$args = apply_filters( 'hametuha_block_creator_attributes', $this->filter_attributes( $args ), $this->get_block_name() );
 		register_block_type( $this->get_block_name(), $args );
 	}
 	

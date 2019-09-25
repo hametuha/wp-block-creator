@@ -52,6 +52,11 @@ Now all block will be automatically included.
 You don't have to load 1 by 1.
 Add new block anytime you want.
 
+Every JavaScripts and Stylesheets will be resgistered with the power of [wp-enqueue-manager](https://github.com/hametuha/wp-enqueue-manager). Write proper header like below:
+
+
+For more details, see [README.md](https://github.com/hametuha/wp-enqueue-manager) of `wp-enqueue-manager`.
+
 ## License
 
 GPL 3.0 or later. Compatible with WordPress.

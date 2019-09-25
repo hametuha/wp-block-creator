@@ -1,24 +1,40 @@
 language: php
-
 notifications:
   email:
     on_success: never
     on_failure: change
-
 branches:
   only:
-    - master
-    - "/^v?[0-9\\.]+$/"
-
+  - master
+  - "/^v?[0-9\\.]+$/"
 php:
 - '5.6'
 - '7.0'
 - '7.1'
 - '7.2'
 - '7.3'
-
 before_script:
-  - composer install
-
+- composer install
 script:
-  - composer test
+- composer test
+before_deploy:
+  - echo 'Making deploy packages...'
+  - rm -rfv .git
+  - rm -rfv bin
+  - rm -rfv tests
+  - rm -rfv .gitignore
+  - rm -rfv .travis.yml
+  - rm -rfv vendor
+  - rm -rfv composer.lock
+  - rm -rfv phpunit.xml.dist
+  - zip -r wp-block-creator.zip ./
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: YY9TUHnSC4uxutv+qL1l5d7UqAEf/4goKfnKalMMV5KD8J0mlIRTXJubswFbuMYc6nlbpbI2niG+Cb0RZcnYSQldZ6ZTKuZb6c7ZQiSVZ/NAKmjxJU7pkmJ4mrjwYoXfIBie4fjcXkEjwszWaPxiXvIFs5AbGTG3mK0mVuIAga4urzWmcGwWxOu9tM0L2578HR+2Dglq7iQGR+VWqmfjjv6DAd7DZMye/1beYK6QboHVxiVl8et6uh2v2xyYRibiifZgSvmDq4L6W3gjc8HLl8s6XHoZEXu7Zgx3CBrzglRasljVf8e+/PkI70PUolY/LpX+q6zFltA1UXrZgcT6I9j/pDYj6QH5q5jIEBXOnJHzhUYHp7to5YPhYc6s3LpPkxYKfMZXIcy3vsQsvKS2yCwLivzaX446KghfEqQglrXM0D3MJi00RTs4XOys9gXG+0vPTt6faNgerKkPlGgbJbckZDWULUJAv+4M/x/033Qo1p/BQvoK8LskNPuX3kl4Isp3NOEi5vvOUbGG+KVv9KfHmLYK3Y7KMsWA2TlTdhdHtTG12LQTxwtX6XGEPkGHLzPuLB1uEqUx//l6/tPOYtJtwrmyQ/J4QTmkULcjb1elBSjj5jnCmI+LkXEB5s1F9QAweCJDmASitCBRlZrXmi3RxSkChO/zuDLlFN0WF/0=
+  file: wp-block-creator.zip
+  on:
+    repo: hametuha/wp-block-creator
+    tags: true
+    php: '7.0'
