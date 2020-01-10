@@ -16,16 +16,16 @@ use Hametuha\StringUtility\Path;
 abstract class AbstractBlock extends Singleton {
 
 	use NamingConventions, Path;
-	
+
 	protected $prefix = '';
-	
+
 	protected $block_name = '';
-	
+
 	/**
 	 * @var bool If set to true, skip this block.
 	 */
 	protected $disabled = false;
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -33,17 +33,17 @@ abstract class AbstractBlock extends Singleton {
 		if ( $this->disabled || ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
-		add_action( 'init', [ $this, 'register_assets' ] );
-		add_action( 'init', [ $this, 'register_block' ] );
+		add_action( 'init', [ $this, 'register_assets' ], 20 );
+		add_action( 'init', [ $this, 'register_block' ], 30 );
 		add_action( 'enqueue_block_assets', [ $this, 'enqueue_block_assets' ] );
 		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_block_editor_assets' ] );
 	}
-	
+
 	/**
 	 * Enqueue something both editor and front end.
 	 */
 	public function enqueue_block_assets() {}
-	
+
 	/**
 	 * Enqueue something only on editor.
 	 */
@@ -57,7 +57,7 @@ abstract class AbstractBlock extends Singleton {
 	public function register_assets() {
 		do_action( 'hametuha_block_creator_register_assets', $this->get_block_base() );
 	}
-	
+
 	/**
 	 * Register block.
 	 */
@@ -73,7 +73,7 @@ abstract class AbstractBlock extends Singleton {
 		$args = apply_filters( 'hametuha_block_creator_attributes', $this->filter_attributes( $args ), $this->get_block_name() );
 		register_block_type( $this->get_block_name(), $args );
 	}
-	
+
 	/**
 	 * Filter attributes.
 	 *
@@ -84,7 +84,7 @@ abstract class AbstractBlock extends Singleton {
 	protected function filter_attributes( $args ) {
 		return $args;
 	}
-	
+
 	/**
 	 * Set prefix.
 	 *
@@ -93,14 +93,14 @@ abstract class AbstractBlock extends Singleton {
 	public function set_prefix( $prefix ) {
 		$this->prefix = preg_replace( '/-$/u', '', $prefix );
 	}
-	
+
 	/**
 	 * Get scripts for block.
 	 *
 	 * @return string
 	 */
 	abstract protected function get_script();
-	
+
 	/**
 	 * Get style to include.
 	 *
@@ -109,7 +109,7 @@ abstract class AbstractBlock extends Singleton {
 	protected function get_style() {
 		return '';
 	}
-	
+
 	/**
 	 * Use property or kebab case of class name.
 	 *
@@ -120,10 +120,10 @@ abstract class AbstractBlock extends Singleton {
 			return $this->block_name;
 		}
 		list( $class_name ) = array_reverse( explode( "\\", get_called_class() ) );
-		
+
 		return $this->camel_to_kebab( $class_name );
 	}
-	
+
 	/**
 	 * Get block name.
 	 *
