@@ -132,4 +132,13 @@ abstract class AbstractBlock extends Singleton {
 	protected function get_block_name() {
 		return $this->prefix . '/' . $this->get_block_base();
 	}
+	
+	/**
+	 * Detect REST request.
+	 *
+	 * @return bool
+	 */
+	protected function is_rest() {
+		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+	}
 }
