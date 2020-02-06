@@ -141,4 +141,32 @@ abstract class AbstractBlock extends Singleton {
 	protected function is_rest() {
 		return defined( 'REST_REQUEST' ) && REST_REQUEST;
 	}
+	
+	/**
+	 * Get warning comment for dynamic block.
+	 *
+	 * @param string $label Label string for comment header.
+	 * @param string $desc  Description in commnet body
+	 * @param string $icon  Default warning. Use dashicons icon name.
+	 *
+	 * @return string
+	 */
+	protected function get_placeholder_for_editor( $label = '', $desc = '', $icon = 'warning' ) {
+		$label = (string) $label;
+		$desc  = (string) $desc;
+		if ( $label ) {
+			$label = sprintf(
+				'<div class="components-placeholder__label"><span class="dashicons dashicons-%s"></span>%s</div>',
+				esc_attr( $icon ),
+				esc_html( $label )
+			);
+		}
+		if ( $desc ) {
+			$desc = sprintf(
+				'<div class="components-placeholder__fieldset"><p>%s</p></div>',
+				esc_html( $desc )
+			);
+		}
+		return sprintf( '<div class="components-placeholder">%s%s</div>', $label, $desc );
+	}
 }

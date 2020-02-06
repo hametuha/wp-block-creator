@@ -13,20 +13,19 @@ php:
 - '7.1'
 - '7.2'
 - '7.3'
+services: mysql
+env:
+  matrix:
+    - WP_VERSION=latest
+    - WP_VERSION=5.0
 before_script:
 - composer install
+- bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 script:
 - composer test
 before_deploy:
   - echo 'Making deploy packages...'
-  - rm -rfv .git
-  - rm -rfv bin
-  - rm -rfv tests
-  - rm -rfv .gitignore
-  - rm -rfv .travis.yml
-  - rm -rfv vendor
-  - rm -rfv composer.lock
-  - rm -rfv phpunit.xml.dist
+  - bash bin/cleanup.sh
   - zip -r wp-block-creator.zip ./
 deploy:
   provider: releases
@@ -38,3 +37,4 @@ deploy:
     repo: hametuha/wp-block-creator
     tags: true
     php: '7.0'
+    condition: $WP_VERSION = latest
