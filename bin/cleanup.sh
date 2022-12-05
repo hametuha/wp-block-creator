@@ -4,6 +4,7 @@ set -e
 
 # Remove unwanted files.
 rm -rf .git
+rm -rf .github
 rm -rf .gitignore
 rm -rf .travis.yml
 rm -rf bin
