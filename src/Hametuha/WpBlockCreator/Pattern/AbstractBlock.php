@@ -67,7 +67,8 @@ abstract class AbstractBlock extends Singleton {
 			$args['render_callback'] = [ $this, 'render_callback' ];
 		}
 		$args['editor_script'] = $this->get_script();
-		if ( $style = $this->get_style() ) {
+		$style                 = $this->get_style();
+		if ( $style ) {
 			$args['editor_style'] = $style;
 		}
 		$args = apply_filters( 'hametuha_block_creator_attributes', $this->filter_attributes( $args ), $this->get_block_name() );
@@ -119,7 +120,7 @@ abstract class AbstractBlock extends Singleton {
 		if ( $this->block_name ) {
 			return $this->block_name;
 		}
-		list( $class_name ) = array_reverse( explode( "\\", get_called_class() ) );
+		list( $class_name ) = array_reverse( explode( '\\', get_called_class() ) );
 
 		return $this->camel_to_kebab( $class_name );
 	}
@@ -132,7 +133,7 @@ abstract class AbstractBlock extends Singleton {
 	protected function get_block_name() {
 		return $this->prefix . '/' . $this->get_block_base();
 	}
-	
+
 	/**
 	 * Detect REST request.
 	 *
@@ -141,7 +142,7 @@ abstract class AbstractBlock extends Singleton {
 	protected function is_rest() {
 		return defined( 'REST_REQUEST' ) && REST_REQUEST;
 	}
-	
+
 	/**
 	 * Get warning comment for dynamic block.
 	 *

@@ -13,7 +13,7 @@
         "test": "phpunit",
         "lint": [
             "phpcs --config-set installed_paths $(pwd)/vendor/wp-coding-standards/wpcs",
-            "phpcs --standard=phpcs.ruleset.xml $(find ./app -name '*.php')"
+            "phpcs --standard=phpcs.ruleset.xml $(find ./src -name '*.php')"
         ]
 
     },
@@ -26,6 +26,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": ">=5.7",
+        "squizlabs/php_codesniffer": "^3.3",
+        "wp-coding-standards/wpcs": "^2.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.0",
         "yoast/phpunit-polyfills": "^1.0"
     },
     "autoload": {

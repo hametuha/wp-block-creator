@@ -12,12 +12,12 @@ use Symfony\Component\Finder\Finder;
  * @package wp-block-creator
  */
 class WpBlockCreator {
-	
+
 	/**
 	 * Constructor forbidden.
 	 */
 	final private function __construct() {}
-	
+
 	/**
 	 * Register JavaScripts.
 	 *
