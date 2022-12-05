@@ -57,15 +57,15 @@ jobs:
 
       - name: Start MySQL
         run: sudo systemctl start mysql
-        if: matrix.php !== 5.6
+        if: matrix.php != 5.6
 
       - name: Install WordPress
         run: bash bin/install-wp-tests.sh wordpress root root 127.0.0.1:3306 ${{ matrix.wp }}
-        if: matrix.php !== 5.6
+        if: matrix.php != 5.6
 
       - name: Unit Test
         run: composer test
-        if: matrix.php !== 5.6
+        if: matrix.php != 5.6
 
   release:
     name: Create Release Package
