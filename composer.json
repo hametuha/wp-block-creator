@@ -11,24 +11,21 @@
     ],
     "scripts": {
         "test": "phpunit",
-        "lint": [
-            "phpcs --config-set installed_paths $(pwd)/vendor/wp-coding-standards/wpcs",
-            "phpcs --standard=phpcs.ruleset.xml $(find ./src -name '*.php')"
-        ]
-
+        "lint":  "phpcs --standard=phpcs.ruleset.xml $(find ./src -name '*.php')"
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.2",
         "hametuha/singleton-pattern":  "^1.2",
         "hametuha/string-utility": "^1.2",
-        "hametuha/wp-enqueue-manager": "^1.1"
+        "hametuha/wp-enqueue-manager": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": ">=5.7",
         "squizlabs/php_codesniffer": "^3.3",
         "wp-coding-standards/wpcs": "^2.0",
-        "phpcompatibility/phpcompatibility-wp": "^2.0",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
         "yoast/phpunit-polyfills": "^1.0"
     },
     "autoload": {
@@ -39,6 +36,11 @@
     "autoload-dev": {
         "psr-0": {
             "Hametuha\\WpBlockCreatorTest": "tests/src"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }

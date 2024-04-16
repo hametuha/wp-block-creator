@@ -1,3 +1,4 @@
 tests/ export-ignore
 bin/ export-ignore
 .travis.yml export-ignore
+.github/ export-ignore

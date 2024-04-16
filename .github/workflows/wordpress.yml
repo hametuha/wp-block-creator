@@ -14,73 +14,35 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [ ubuntu-latest ]  # OS. ubuntu-18.04 is also available.
         php: [ '7.4', '8.0', '8.1' ] # PHP versions to check.
         wp: [ '5.9', 'latest' ]
-        tools: [ composer ]
-        include:
-          - os: ubuntu-18.04
-            php: 5.6
-            tools: composer:v2.2
-            wp: 5.9
-          - os: ubuntu-18.04
-            php: 5.6
-            tools: composer:v2.2
-            wp: latest
-    services:
-      mysql:
-        image: mysql:5.7
-        options: --health-cmd "mysqladmin ping --host 127.0.0.1 --port 3306" --health-interval 20s --health-timeout 10s --health-retries 10
-        ports:
-          - 3306/tcp
-        env:
-          MYSQL_ROOT_PASSWORD: root
-    runs-on: ${{ matrix.os }}
     name: UnitTest in WordPress ${{ matrix.wp }} and PHP ${{ matrix.php }}
-    steps:
-      - uses: actions/checkout@master
+    uses: tarosky/workflows/.github/workflows/wp-unit-test.yml@main
+    with:
+      php_version: ${{ matrix.php }}
+      wp_version: ${{ matrix.wp }}
 
-      - name: Setup PHP with composer v2
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          tools: ${{ matrix.tools }}
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
-
-      - name: Check PHP syntax
-        run: composer lint
-
-      - name: Start MySQL
-        run: sudo systemctl start mysql
-        if: matrix.php != 5.6
-
-      - name: Install WordPress
-        run: bash bin/install-wp-tests.sh wordpress root root 127.0.0.1:3306 ${{ matrix.wp }}
-        if: matrix.php != 5.6
-
-      - name: Unit Test
-        run: composer test
-        if: matrix.php != 5.6
+  phpcs:
+    uses: tarosky/workflows/.github/workflows/phpcs.yml@main
+    with:
+      version: 7.2
 
   release:
     name: Create Release Package
-    needs: [ test ]
+    needs: [ test, phpcs ]
     if: contains(github.ref, 'tags/')
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
 
       - name: Setup PHP with composer v2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 5.6
-          tools: composer:v2.2
+          php-version: 7.2
+          tools: composer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clean Package
         run: bash bin/cleanup.sh
