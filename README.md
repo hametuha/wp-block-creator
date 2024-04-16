@@ -1,8 +1,8 @@
-# wp-block-creator
+# WP Block Creator
 
 Gutenberg Block Creator for themes.
 
-[![Travis CI](https://travis-ci.org/hametuha/wp-block-creator.svg?branch=master)](https://travis-ci.org/hametuha/wp-block-creator)
+[![CI/CD for PHP Library](https://github.com/hametuha/wp-block-creator/actions/workflows/wordpress.yml/badge.svg)](https://github.com/hametuha/wp-block-creator/actions/workflows/wordpress.yml)
 
 ## Installation
 
@@ -53,6 +53,22 @@ You don't have to load 1 by 1.
 Add new block anytime you want.
 
 Every JavaScripts and Stylesheets will be resgistered with the power of [wp-enqueue-manager](https://github.com/hametuha/wp-enqueue-manager). Write proper header like below:
+
+```js
+/*!
+ * Header description here.
+ *
+ * deps=jquery,wp-element,wp-api-fetch
+ */
+```
+
+```css
+/**
+ * Header comment.
+ * 
+ * deps=bootstrap
+ */
+```
 
 
 For more details, see [README.md](https://github.com/hametuha/wp-enqueue-manager) of `wp-enqueue-manager`.
